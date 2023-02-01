@@ -4,12 +4,16 @@ class text_object:
     def __init__(self, texts=[]):
         self.texts = texts
 
-    def average_word_len(self): # Average Word length
-        len_array = [];output = 0
+    def get_word_len(self):
+        len_array = []
         for line in self.texts:
             words = line.rstrip().split()
             for word in words:
                 len_array.append(len(word))
+        return len_array
+
+    def average_word_len(self): # Average Word length
+        output = 0;len_array=self.get_word_len()
         if len(len_array)>0:output = sum(len_array)/len(len_array)
         return output
 
@@ -56,9 +60,21 @@ class text_object:
     
     def get_shannon(self): # shannon entropy
         output = 0
-        richness = get_richness_of_words()
+        richness = self.get_richness_of_words()
         for entry in richness.keys():
             output = output + richness[entry]/math.log(richness[entry],2)
         return -1 * output
 
+    def average_compound_words(self):
+        output = 0;len_array=self.get_word_len()
+        compound_words = [i for i in len_array if (len(i)>=30)]
+        if (len(len_array)>0):output = len(compound_words)/len(len_array)
+        return output
+
+    def word_len_distribution(self):
+        this_dict = {};len_array=self.get_word_len()
+        for i in len_array:
+            this_dict[i] = this_dict.get(i,0) + 1
+        return this_dict
+        
     
