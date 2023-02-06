@@ -1,8 +1,9 @@
 from math import ceil
+import csv
 
 class File_Processor:
 
-    def __init__(self, file_name : str ,path : str = None) -> None:
+    def __init__(self, file_name : str, path : str = None) -> None:
         self.path = path
         self.file_name = file_name
         self.file_path = f"{path}\{file_name}" if path is not None else f"{file_name}"
@@ -22,7 +23,7 @@ class File_Processor:
             print(f"Path or File does not exist. Error Code: {e.errno}")
 
             
-    def initialize(self)-> list[str]:
+    def read(self)-> list[str]:
         
         self.path_error_handling()
 
@@ -71,7 +72,7 @@ class File_Processor:
     def split(self, lines: list = None ,line_count: int = 1, overlap: bool = False, cut: bool = False)-> list:
         
         if lines is None:
-            lines = self.initialize()
+            lines = self.read()
             
         split_matrix = []
 
@@ -81,18 +82,11 @@ class File_Processor:
             split_matrix = self.r_split(lines, line_count, cut)
 
         return split_matrix
+
+    def write(self, file_name: str = None, path: str = None, data: list[list] = None, fields: list[str]= None)->bool:
+
+        pass
+        
         
 
-# file = File_Processor("test")
 
-# test = file.initialize()
-# mat = file.split(lines=test, line_count=2)
-# print(mat)
-
-# print("")
-# print("")
-
-# file2 = File_Processor("test")
-# matrix = file2.split(line_count= 3,cut=True)
-# print(matrix)
-# print(file2.divisions) 

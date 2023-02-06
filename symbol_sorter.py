@@ -28,11 +28,11 @@ class Symbol_Sorter:
         
         if not text_list and self.text_list: 
             text_list = self.text_list
-        else:
+        elif not text_list and not self.text_list:
             print(f"text_list has not been initialized for instance.")
             return
 
-        filter_list = text_list
+        filter_list = text_list.copy()
         for line in range(len(filter_list)):
             filter_list[line] = ''.join([x for x in filter_list[line] if x not in (self.digits_list)]).strip()
         
@@ -44,11 +44,11 @@ class Symbol_Sorter:
         
         if not text_list and self.text_list: 
             text_list = self.text_list
-        elif not (text_list and self.text_list):
+        elif not text_list and not self.text_list:
             print(f"text_list has not been initialized for instance.")
             return
 
-        filter_list = text_list
+        filter_list = text_list.copy()
         for line in range(len(filter_list)):
             filter_list[line] = ''.join([x for x in filter_list[line] if x not in (self.symbol_remover)]).strip()
         
@@ -60,7 +60,7 @@ class Symbol_Sorter:
 
         if not text_list and self.text_list: 
             text_list = self.text_list
-        elif not (text_list and self.text_list):
+        elif not text_list and not self.text_list:
             print(f"text_list has not been initialized for instance.")
             return
         
@@ -90,7 +90,7 @@ class Symbol_Sorter:
         
         if not text_list and self.text_list: 
             text_list = self.text_list
-        elif not (text_list and self.text_list):
+        elif not text_list and not self.text_list:
             print(f"text_list has not been initialized for instance.")
             return
 
@@ -99,16 +99,25 @@ class Symbol_Sorter:
         
         heading_removed_list = [x for x in text_list if not x.startswith(heading)]
         
-        self.text_list = heading_removed_list.copy()
+        self.text_list = heading_removed_list
 
         return heading_removed_list
     
-    def sentence_finder(self, text_list: list[str] = None):
-
-        pass
-
-         
+    def full_stop_remover(self, text_list: list[str] = None):
         
+        if not text_list and self.text_list: 
+            text_list = self.text_list
+        elif not text_list and not self.text_list:
+            print(f"text_list has not been initialized for instance.")
+            return
+
+        filter_list = text_list.copy()
+
+        for x in range(len(text_list)):
+            filter_list[x] = filter_list[x].replace('|', '', 4).strip()
+        
+        self.text_list = filter_list.copy()
+        return filter_list
             
     
     # Getter methods for testing and debugging
@@ -128,8 +137,16 @@ class Symbol_Sorter:
 
 sort = Symbol_Sorter('Transliterated')
 
-test1 = fp('test')
-lines_list = test1.initialize()
+test1 = fp('test', 'tests')
+lines_list = test1.read()
 
 a = sort.digit_remover(lines_list)
+print(a)
+print("")
+print("")
+a = sort.heading_remover(a)
+print(a)
+print("")
+print("")
+a = sort.full_stop_remover(a)
 print(a)
