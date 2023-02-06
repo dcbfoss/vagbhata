@@ -10,7 +10,7 @@ class File_Processor:
         self.file = None
         self.divisons = 0
         
-        print(f"Class Created")
+        
 
     def print_path(self)-> str:
         return self.file_path
@@ -83,16 +83,16 @@ class File_Processor:
         return split_matrix
         
 
-file = File_Processor("test")
+# file = File_Processor("test")
 
-test = file.initialize()
-mat = file.split(lines=test, line_count=2)
-print(mat)
+# test = file.initialize()
+# mat = file.split(lines=test, line_count=2)
+# print(mat)
 
-print("")
-print("")
+# print("")
+# print("")
 
-file2 = File_Processor("test")
-matrix = file2.split(line_count= 3,cut=True)
-print(matrix)
-print(file2.divisions)
+# file2 = File_Processor("test")
+# matrix = file2.split(line_count= 3,cut=True)
+# print(matrix)
+# print(file2.divisions) 
