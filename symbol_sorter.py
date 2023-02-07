@@ -22,15 +22,19 @@ class Symbol_Sorter:
         
         self.text_list = text_list
         self.heading_dict = None
-        
 
-    def digit_remover(self, text_list: list[str] = None) -> list[str]:
-        
+    def check_initialized(self, text_list: list[str]):
         if not text_list and self.text_list: 
             text_list = self.text_list
         elif not text_list and not self.text_list:
             print(f"text_list has not been initialized for instance.")
             return
+      
+
+    def digit_remover(self, text_list: list[str] = None) -> list[str]:
+        
+        if not text_list:
+            self.check_initialized(text_list)
 
         filter_list = text_list.copy()
         for line in range(len(filter_list)):
@@ -40,13 +44,10 @@ class Symbol_Sorter:
 
         return filter_list
     
-    def symbol_remover(self,  text_list: list[str] = None) -> list[str]:
+    def symbol_remover(self, text_list: list[str] = None) -> list[str]:
         
-        if not text_list and self.text_list: 
-            text_list = self.text_list
-        elif not text_list and not self.text_list:
-            print(f"text_list has not been initialized for instance.")
-            return
+        if not text_list:
+            self.check_initialized(text_list)
 
         filter_list = text_list.copy()
         for line in range(len(filter_list)):
@@ -58,11 +59,8 @@ class Symbol_Sorter:
     
     def headings_finder(self, text_list: list[str] = None) -> dict:
 
-        if not text_list and self.text_list: 
-            text_list = self.text_list
-        elif not text_list and not self.text_list:
-            print(f"text_list has not been initialized for instance.")
-            return
+        if not text_list:
+            self.check_initialized(text_list)
         
         line_count = 0
         headings_dict = {}
@@ -88,11 +86,8 @@ class Symbol_Sorter:
 
     def heading_remover(self, text_list: list[str] = None, heading: str = None):
         
-        if not text_list and self.text_list: 
-            text_list = self.text_list
-        elif not text_list and not self.text_list:
-            print(f"text_list has not been initialized for instance.")
-            return
+        if not text_list:
+            self.check_initialized(text_list)
 
         if not heading:
             heading = ''.join([x for x in text_list[0] if not x.isdigit()]).strip()
@@ -105,11 +100,8 @@ class Symbol_Sorter:
     
     def full_stop_remover(self, text_list: list[str] = None):
         
-        if not text_list and self.text_list: 
-            text_list = self.text_list
-        elif not text_list and not self.text_list:
-            print(f"text_list has not been initialized for instance.")
-            return
+        if not text_list:
+            self.check_initialized(text_list)
 
         filter_list = text_list.copy()
 
@@ -121,7 +113,7 @@ class Symbol_Sorter:
             
     
     # Getter methods for testing and debugging
-    def processed_list(self)->list[str]:
+    def get_list(self)->list[str]:
         return self.text_list
     
     def heading_dict(self)->list[str]:
@@ -135,10 +127,17 @@ class Symbol_Sorter:
 
 
 
-sort = Symbol_Sorter('Transliterated')
 
-test1 = fp('test', 'tests')
+test1 = fp('tests/test.txt')
 lines_list = test1.read()
+# proc = test1.split(lines_list)
+# print(proc)
+
+# test2 = fp('test.txt')
+# test2.read()
+# test2.split()
+# print(test2.get_split_matrix())
+sort = Symbol_Sorter('Transliterated')
 
 a = sort.digit_remover(lines_list)
 print(a)
@@ -150,3 +149,5 @@ print("")
 print("")
 a = sort.full_stop_remover(a)
 print(a)
+
+print(sort.get_list())

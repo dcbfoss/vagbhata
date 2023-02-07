@@ -1,15 +1,17 @@
 from math import ceil
+import os
 import csv
 
 class File_Processor:
 
-    def __init__(self, file_name : str, path : str = None) -> None:
-        self.path = path
-        self.file_name = file_name
-        self.file_path = f"{path}\{file_name}" if path is not None else f"{file_name}"
-        self.lines = []
+    def __init__(self, file_path : str) -> None:
+
+        self.file_path = file_path
+        print(self.file_path)
         self.file = None
         self.divisons = 0
+        self.lines = None
+        self.split_matrix = []
         
         
 
@@ -18,7 +20,7 @@ class File_Processor:
     
     def path_error_handling(self)-> None:
         try:
-            self.file = open(f"{self.file_path}.txt", encoding= "utf8" )
+            self.file = open(self.file_path , encoding= "utf8" )
         except OSError as e:
             print(f"Path or File does not exist. Error Code: {e.errno}")
 
@@ -35,6 +37,8 @@ class File_Processor:
         for line in temp_lines:
             if line.rstrip():
                   lines.append(line.rstrip())
+
+        self.lines = lines.copy()
         
         return lines
 
@@ -71,21 +75,38 @@ class File_Processor:
 
     def split(self, lines: list = None ,line_count: int = 1, overlap: bool = False, cut: bool = False)-> list:
         
-        if lines is None:
-            lines = self.read()
+        if not lines and not self.lines:
+            self.lines = self.read()
+        elif lines is not None:
+            self.lines = lines.copy()
             
-        split_matrix = []
-
         if overlap:
-            split_matrix = self.o_split(lines, line_count, cut)
+            self.split_matrix = self.o_split(self.lines, line_count, cut)
         else:
-            split_matrix = self.r_split(lines, line_count, cut)
+            self.split_matrix = self.r_split(self.lines, line_count, cut)
+        
+        return self.split_matrix
 
-        return split_matrix
+    def get_lines(self) -> list[str]:
+        return self.lines
 
-    def write(self, file_name: str = None, path: str = None, data: list[list] = None, fields: list[str]= None)->bool:
+    def get_split_matrix(self) -> list:
+        return self.split_matrix
+        
 
-        pass
+    def write(self, file_name: str, path: str = "", data: list[list] = None, fields: list[str]= None)->bool:
+        
+        if path != "" and not os.path.exists(path):
+            raise OSError("Directory does not Exist")
+
+        file = os.path.join(path,file_name)
+        
+        file = os.path
+
+        
+
+
+
         
         
 
