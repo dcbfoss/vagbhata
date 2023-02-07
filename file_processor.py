@@ -108,21 +108,3 @@ class File_Processor:
             writer.writerows(data)
 
         print("Data written Successfully")
-
-
-
-
-
-        
-        
-
-        
-
-        
-
-
-
-        
-        
-
-
