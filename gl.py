@@ -30,16 +30,33 @@ def get_lg(syllables):
                    2358, 2359, 2360, 2361, 2367, 2369, 2371, 2374, 2378, 2381,
                    2392, 2393, 2394, 2395, 2396, 2397, 2398, 2399, 2402]
     for index, syllable in enumerate(syllables):
-        if ord(syllable[-1]) in removables:output.append('-')
-        elif ord(syllable[-1]) in numbers:output.append('-')
-        elif ord(syllable[-1]) in skip:output.append('-')
+        if ord(syllable[-1]) in removables:output.append(chr(45))
+        elif ord(syllable[-1]) in numbers:output.append(chr(45))
+        elif ord(syllable[-1]) in skip:output.append(chr(45))
         else:
             l_data = [True if (ord(i) in laghu_chars) else False for i in syllable]
             if (index < (len(syllables)-1)):
-                if ((all(l_data)) and not((chr(skip[-1]) in syllables[index+1]))):output.append('L')
-                else:output.append('G')
+                if ((all(l_data)) and not((chr(skip[-1]) in syllables[index+1]))):output.append(chr(76))
+                else:output.append(chr(71))
             elif (index == (len(syllables)-1)):
-                if all(l_data):output.append('L')
-                else:output.append('G')
+                if all(l_data):output.append(chr(76))
+                else:output.append(chr(71))
             else:pass
+    return output
+
+def slice_list(syllables, cropsize=25):
+    if len(syllables)<=cropsize:return syllables
+    output = []
+    while len(syllables)>0:
+        output.append(syllables[0:25])
+        syllables = syllables[25:]
+    return output
+
+def create_matrix(sanskrit_lines,frame_width=25):
+    val_arr = {chr(45):-1,chr(76):0,chr(71):1}
+    output = [[-1 for j in range(frame_width)] for i in range(len(sanskrit_lines))]
+    for index, line in enumerate(sanskrit_lines):
+        gl = get_lg(get_syllables(line))
+        for ind, entry in enumerate(gl):
+            output[index][ind] = val_arr[gl[ind]]
     return output
