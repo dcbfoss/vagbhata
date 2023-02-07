@@ -7,7 +7,7 @@ class Symbol_Sorter:
         
         languages = ['sanskrit','Sanskrit', 'transliterated', 'Transliterated']
         if language not in languages:
-            raise ValueError(f"Invalid language, must be one in {languages}")
+            raise ValueError(f"Invalid language, must be either {', '.join(languages)}")
         
         self.symbols_list = ['?', '(', ')', ',', '.', '/' , '\\', '-', '_', '!', '[', ']', '`','~', '{', '}', ':', ';', '+']
         self.digits_list = list(map(str, range(0,10)))
@@ -27,8 +27,8 @@ class Symbol_Sorter:
         if not text_list and self.text_list: 
             text_list = self.text_list
         elif not text_list and not self.text_list:
-            print(f"text_list has not been initialized for instance.")
-            return
+            raise OSError(f"text_list has not been initialized for instance.")
+            
       
 
     def digit_remover(self, text_list: list[str] = None) -> list[str]:
@@ -128,26 +128,34 @@ class Symbol_Sorter:
 
 
 
-test1 = fp('tests/test.txt')
-lines_list = test1.read()
-# proc = test1.split(lines_list)
-# print(proc)
+# test1 = fp('tests/test.txt')
+# lines_list = test1.read()
+# # proc = test1.split(lines_list)
+# # print(proc)
 
-# test2 = fp('test.txt')
-# test2.read()
-# test2.split()
-# print(test2.get_split_matrix())
-sort = Symbol_Sorter('Transliterated')
+# # test2 = fp('test.txt')
+# # test2.read()
+# # test2.split()
+# # print(test2.get_split_matrix())
+# sort = Symbol_Sorter('Transliterated')
 
-a = sort.digit_remover(lines_list)
-print(a)
-print("")
-print("")
-a = sort.heading_remover(a)
-print(a)
-print("")
-print("")
-a = sort.full_stop_remover(a)
-print(a)
+# a = sort.digit_remover(lines_list)
+# print(a)
+# print("")
+# print("")
+# a = sort.heading_remover(a)
+# print(a)
+# print("")
+# print("")
+# a = sort.full_stop_remover(a)
+# print(a)
 
-print(sort.get_list())
+# print(sort.get_list())
+
+# sort = fp('tests/test.txt')
+
+# data = [['ID1234','John', 'Smith', 12000],['ID1235','Garry', 'Loaf', 12000]]
+# titles = ['id', 'First_Name', 'Last_Name', 'Salary']
+
+
+# sort.write('tests/testCSV.csv', data=data, fields=titles)

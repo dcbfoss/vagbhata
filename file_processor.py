@@ -38,8 +38,7 @@ class File_Processor:
             if line.rstrip():
                   lines.append(line.rstrip())
 
-        self.lines = lines.copy()
-        
+        self.lines = lines.copy()        
         return lines
 
 
@@ -94,14 +93,30 @@ class File_Processor:
         return self.split_matrix
         
 
-    def write(self, file_name: str, path: str = "", data: list[list] = None, fields: list[str]= None)->bool:
-        
-        if path != "" and not os.path.exists(path):
-            raise OSError("Directory does not Exist")
+    def write(self, file_path: str, data: list[list] = None, fields: list[str]= None):
 
-        file = os.path.join(path,file_name)
+        if '/' in file_path:
+            file = file_path.split('/')
+            if not os.path.exists(file[0]):
+                raise OSError(f"Diretctory {file[0]} does not exist: {OSError.errno}")
         
-        file = os.path
+        assert len(data[0]) == len(fields), "Lengths do not match for data and fields"
+
+        with open(file_path, 'w', newline='',encoding='UTF8') as file:
+            writer = csv.writer(file)
+            writer.writerow(fields)
+            writer.writerows(data)
+
+        print("Data written Successfully")
+
+
+
+
+
+        
+        
+
+        
 
         
 
