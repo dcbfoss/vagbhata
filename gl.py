@@ -44,7 +44,7 @@ def get_lg(syllables: list):
             else:pass
     return output
 
-def slice_list(syllables: list, cropsize: int=25):
+def slice_list(syllables: list, cropsize: int=40):
     if len(syllables)<=cropsize:return syllables
     output = []
     while len(syllables)>0:
@@ -52,7 +52,7 @@ def slice_list(syllables: list, cropsize: int=25):
         syllables = syllables[25:]
     return output
 
-def create_matrix(sanskrit_lines: list,frame_width: int=25):
+def create_matrix(sanskrit_lines: list,frame_width: int=40):
     val_arr = {chr(45):-1,chr(76):0,chr(71):1}
     output = [[-1 for j in range(frame_width)] for i in range(len(sanskrit_lines))]
     for index, line in enumerate(sanskrit_lines):
