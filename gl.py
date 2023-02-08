@@ -8,7 +8,7 @@ constants = [b for b in range(2325,2345)];constants.extend([c for c in range(234
 removables = [2404,2405]
 signsandconnector = list(signs);signsandconnector.append(connector);signsandconnector.extend(special)
 
-def get_syllables(text):
+def get_syllables(text: str):
     output = [];connected = False
     length = len(text)
     for index in range(length):
@@ -21,7 +21,7 @@ def get_syllables(text):
         else:connected = False
     return output
 
-def get_lg(syllables):
+def get_lg(syllables: list):
     skip = [2365, 2381];output = []
     laghu_chars = [2309, 2311, 2313, 2315, 2316, 2318, 2322, 2325, 2326, 2327,
                    2328, 2329, 2330, 2331, 2332, 2333, 2334, 2335, 2336, 2337,
@@ -44,7 +44,7 @@ def get_lg(syllables):
             else:pass
     return output
 
-def slice_list(syllables, cropsize=25):
+def slice_list(syllables: list, cropsize: int=25):
     if len(syllables)<=cropsize:return syllables
     output = []
     while len(syllables)>0:
@@ -52,7 +52,7 @@ def slice_list(syllables, cropsize=25):
         syllables = syllables[25:]
     return output
 
-def create_matrix(sanskrit_lines,frame_width=25):
+def create_matrix(sanskrit_lines: list,frame_width: int=25):
     val_arr = {chr(45):-1,chr(76):0,chr(71):1}
     output = [[-1 for j in range(frame_width)] for i in range(len(sanskrit_lines))]
     for index, line in enumerate(sanskrit_lines):
@@ -60,3 +60,17 @@ def create_matrix(sanskrit_lines,frame_width=25):
         for ind, entry in enumerate(gl):
             output[index][ind] = val_arr[gl[ind]]
     return output
+
+def get_gl_count(sankskrit_lines: list):
+    g_count = 0; l_count= 0
+    for line in sanskrit_lines:
+        gl = "".join(get_lg(get_syllables(line)))
+        g_count += gl.count(chr(71))
+        l_count += gl.count(chr(76))
+    return {chr(71):g_count, chr(76):l_count}
+
+def get_gl_ratio(sankskrit_lines: list):
+    count = get_gl_count(sankskrit_lines)
+    g_ratio = count[chr(71)]/(count[chr(71)]+count[chr(76)])
+    l_ratio = count[chr(76)]/(count[chr(71)]+count[chr(76)])
+    return (g_ratio, l_ratio)
