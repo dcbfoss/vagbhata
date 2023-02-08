@@ -153,14 +153,4 @@ class Text:
         return self.symbols_list
 
 
-test = fp('tests/test.txt')
-
-ml = test.read()
-
-sort = Text('transliterated',ml)
-
-sort.get_sentence()
-
-print(sort.get_list())
-
 
