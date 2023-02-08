@@ -93,7 +93,7 @@ class File_Processor:
         return self.split_matrix
         
 
-    def write(self, file_path: str, data: list[list] = None, fields: list[str]= None):
+    def write(self, file_path: str, data: list[list] = None, fields: list[str]= None)-> None:
 
         if '/' in file_path:
             file = file_path.split('/')
@@ -106,5 +106,3 @@ class File_Processor:
             writer = csv.writer(file)
             writer.writerow(fields)
             writer.writerows(data)
-
-        print("Data written Successfully")

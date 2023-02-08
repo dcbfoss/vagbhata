@@ -1,7 +1,6 @@
-from file_processor import File_Processor as fp
 
 
-class Symbol_Sorter:
+class Text:
 
     def __init__(self, language:str, text_list: list[str] = None) -> None:
         
@@ -31,7 +30,7 @@ class Symbol_Sorter:
             
       
 
-    def digit_remover(self, text_list: list[str] = None) -> list[str]:
+    def remove_digit(self, text_list: list[str] = None) -> list[str]:
         
         if not text_list:
             self.check_initialized(text_list)
@@ -44,7 +43,7 @@ class Symbol_Sorter:
 
         return filter_list
     
-    def symbol_remover(self, text_list: list[str] = None) -> list[str]:
+    def remove_symbol(self, text_list: list[str] = None) -> list[str]:
         
         if not text_list:
             self.check_initialized(text_list)
@@ -57,7 +56,7 @@ class Symbol_Sorter:
 
         return filter_list
     
-    def headings_finder(self, text_list: list[str] = None) -> dict:
+    def find_headings(self, text_list: list[str] = None) -> dict:
 
         if not text_list:
             self.check_initialized(text_list)
@@ -84,8 +83,7 @@ class Symbol_Sorter:
         self.heading_dict = headings_dict.copy()
         return headings_dict  
 
-    def heading_remover(self, text_list: list[str] = None, heading: str = None):
-        
+    def remove_headings(self, text_list: list[str] = None, heading: str = None)-> list[str]:
         if not text_list:
             self.check_initialized(text_list)
 
@@ -98,7 +96,7 @@ class Symbol_Sorter:
 
         return heading_removed_list
     
-    def full_stop_remover(self, text_list: list[str] = None):
+    def remove_full_stop(self, text_list: list[str] = None, count: int = 2)-> list[str]:
         
         if not text_list:
             self.check_initialized(text_list)
@@ -106,56 +104,21 @@ class Symbol_Sorter:
         filter_list = text_list.copy()
 
         for x in range(len(text_list)):
-            filter_list[x] = filter_list[x].replace('|', '', 4).strip()
+            filter_list[x] = filter_list[x].replace('|', '', count).strip()
         
         self.text_list = filter_list.copy()
         return filter_list
             
     
     # Getter methods for testing and debugging
-    def get_list(self)->list[str]:
+    def get_list(self)-> list[str]:
         return self.text_list
     
-    def heading_dict(self)->list[str]:
+    def get_heading_dict(self)-> dict:
         return self.heading_dict
 
-    def get_digits_list(self)->list:
+    def get_digits_list(self)-> list:
         return self.digits_list
     
-    def get_symbol_lists(self)->list:
+    def get_symbol_lists(self)-> list:
         return self.symbols_list
-
-
-
-
-# test1 = fp('tests/test.txt')
-# lines_list = test1.read()
-# # proc = test1.split(lines_list)
-# # print(proc)
-
-# # test2 = fp('test.txt')
-# # test2.read()
-# # test2.split()
-# # print(test2.get_split_matrix())
-# sort = Symbol_Sorter('Transliterated')
-
-# a = sort.digit_remover(lines_list)
-# print(a)
-# print("")
-# print("")
-# a = sort.heading_remover(a)
-# print(a)
-# print("")
-# print("")
-# a = sort.full_stop_remover(a)
-# print(a)
-
-# print(sort.get_list())
-
-# sort = fp('tests/test.txt')
-
-# data = [['ID1234','John', 'Smith', 12000],['ID1235','Garry', 'Loaf', 12000]]
-# titles = ['id', 'First_Name', 'Last_Name', 'Salary']
-
-
-# sort.write('tests/testCSV.csv', data=data, fields=titles)
