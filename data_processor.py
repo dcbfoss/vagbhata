@@ -1,4 +1,4 @@
-
+from file_processor import File_Processor as fp
 
 class Text:
 
@@ -25,6 +25,7 @@ class Text:
     def check_initialized(self, text_list: list[str]):
         if not text_list and self.text_list: 
             text_list = self.text_list
+            return text_list
         elif not text_list and not self.text_list:
             raise OSError(f"text_list has not been initialized for instance.")
             
@@ -33,7 +34,7 @@ class Text:
     def remove_digit(self, text_list: list[str] = None) -> list[str]:
         
         if not text_list:
-            self.check_initialized(text_list)
+            text_list = self.check_initialized(text_list)
 
         filter_list = text_list.copy()
         for line in range(len(filter_list)):
@@ -46,7 +47,7 @@ class Text:
     def remove_symbol(self, text_list: list[str] = None) -> list[str]:
         
         if not text_list:
-            self.check_initialized(text_list)
+            text_list = self.check_initialized(text_list)
 
         filter_list = text_list.copy()
         for line in range(len(filter_list)):
@@ -59,7 +60,7 @@ class Text:
     def find_headings(self, text_list: list[str] = None) -> dict:
 
         if not text_list:
-            self.check_initialized(text_list)
+            text_list = self.check_initialized(text_list)
         
         line_count = 0
         headings_dict = {}
@@ -85,7 +86,7 @@ class Text:
 
     def remove_headings(self, text_list: list[str] = None, heading: str = None)-> list[str]:
         if not text_list:
-            self.check_initialized(text_list)
+            text_list = self.check_initialized(text_list)
 
         if not heading:
             heading = ''.join([x for x in text_list[0] if not x.isdigit()]).strip()
@@ -99,7 +100,7 @@ class Text:
     def remove_full_stop(self, text_list: list[str] = None, count: int = 2)-> list[str]:
         
         if not text_list:
-            self.check_initialized(text_list)
+            text_list = self.check_initialized(text_list)
 
         filter_list = text_list.copy()
 
@@ -108,8 +109,36 @@ class Text:
         
         self.text_list = filter_list.copy()
         return filter_list
+
+    def get_sentence(self, text_list: list[str] = None)-> list[str]:
+        
+        if not text_list:
+            text_list = self.check_initialized(text_list)
+        
+        temp_str = ' '.join(text_list)
+        sentence_list = []
+        iter = 0
+        while temp_str:
             
-    
+            offset = 1
+
+            if temp_str[iter] == '|':
+                if temp_str[iter+1] == '|':
+                    offset = 2
+                sentence_list.append(temp_str[:iter+offset])
+                temp_str = temp_str[iter+offset:].strip()
+                iter = 0
+            else:
+                iter += 1
+            
+            if (len(temp_str)-1) < iter or (len(temp_str)-1) < (iter + 1):
+                sentence_list.append(temp_str)
+                break   
+        
+        self.text_list = sentence_list.copy()
+        return sentence_list 
+
+ 
     # Getter methods for testing and debugging
     def get_list(self)-> list[str]:
         return self.text_list
@@ -122,3 +151,16 @@ class Text:
     
     def get_symbol_lists(self)-> list:
         return self.symbols_list
+
+
+test = fp('tests/test.txt')
+
+ml = test.read()
+
+sort = Text('transliterated',ml)
+
+sort.get_sentence()
+
+print(sort.get_list())
+
+
