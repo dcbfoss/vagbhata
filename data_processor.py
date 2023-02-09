@@ -1,5 +1,3 @@
-from file_processor import File_Processor as fp
-
 class Text:
 
     def __init__(self, language, text_list = None):
