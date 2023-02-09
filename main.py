@@ -4,3 +4,4 @@ import gl
 import graphics as gp
 
 
+print(fp.get_filename())

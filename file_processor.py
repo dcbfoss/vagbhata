@@ -2,6 +2,48 @@ from math import ceil
 import os
 import csv
 
+
+SN_AH = 'data/Sanskrit/AH/'
+SN_AS = 'data/Sanskrit/AS/'
+SN_CS = 'data/Sanskrit/CS/'
+
+TL_AH = 'data/Transliterated/AH/'
+TL_AS = 'data/Transliterated/AS/'
+TL_CS = 'data/Transliterated/CS/'
+
+AH_AS_DOC_NAMES = ['chikitsa_sthana','kalpa_sthana','nidana_sthana','shareera_sthana','sutra_sthana','uttara_sthana']
+CS_DOC_NAMES = ['chikitsa_sthana','kalpa_sthana','nidana_sthana','shareera_sthana','siddi_sthana','indriya_sthana']
+
+DIRS = {'AS_TL':TL_AS,
+        'AS_SN':SN_AS,
+        'AH_TL':TL_AH,
+        'AH_SN':SN_AH,
+        'CS_TL':TL_CS,
+        'CS_SN':SN_CS,}
+
+def get_chapter_name(number, book):
+    if book == 'CS':return CS_DOC_NAMES[number-1]
+    else:return AH_AS_DOC_NAMES[number-1]
+
+def get_filename(mode='SN', book='AS', chapter=1):
+    # mode = TL/SN
+    # book = AS/AH/CS
+    # chapter = 1/2/3/4/5
+    selected_mode = 'SN';selected_book = 'AS';selected_chapter='chikitsa_sthana'
+    if (mode.upper() == 'SN'):selected_mode = 'SN'
+    else:selected_mode = 'TL'
+    if (book.upper() == 'AS'):selected_book = 'AS'
+    elif (book.upper() == 'AH'):selected_book = 'AH'
+    else:selected_book = 'CS'
+    if ((chapter > 0) and (chapter < 7)):selected_chapter = get_chapter_name(chapter, selected_book)
+    elif (chapter < 1):selected_chapter = get_chapter_name(1, selected_book)
+    elif (chapter > 6):selected_chapter = get_chapter_name(6, selected_book)
+    else:selected_chapter = get_chapter_name(1, selected_book)
+    FILENAME = '_'.join([selected_book, selected_chapter, selected_mode.lower()])+'.txt'
+    DIRNAME = DIRS['_'.join([selected_book,selected_mode])]
+    return DIRNAME+FILENAME
+
+
 class File_Processor:
 
     def __init__(self, file_path):
