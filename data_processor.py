@@ -2,7 +2,7 @@ from file_processor import File_Processor as fp
 
 class Text:
 
-    def __init__(self, language:str, text_list: list[str] = None) -> None:
+    def __init__(self, language, text_list = None):
         
         languages = ['sanskrit','Sanskrit', 'transliterated', 'Transliterated']
         if language not in languages:
@@ -22,7 +22,7 @@ class Text:
         self.text_list = text_list
         self.heading_dict = None
 
-    def check_initialized(self, text_list: list[str]):
+    def check_initialized(self, text_list):
         if not text_list and self.text_list: 
             text_list = self.text_list
             return text_list
@@ -31,7 +31,7 @@ class Text:
             
       
 
-    def remove_digit(self, text_list: list[str] = None) -> list[str]:
+    def remove_digit(self, text_list = None):
         
         if not text_list:
             text_list = self.check_initialized(text_list)
@@ -44,7 +44,7 @@ class Text:
 
         return filter_list
     
-    def remove_symbol(self, text_list: list[str] = None) -> list[str]:
+    def remove_symbol(self, text_list = None):
         
         if not text_list:
             text_list = self.check_initialized(text_list)
@@ -57,7 +57,7 @@ class Text:
 
         return filter_list
     
-    def find_headings(self, text_list: list[str] = None) -> dict:
+    def find_headings(self, text_list = None):
 
         if not text_list:
             text_list = self.check_initialized(text_list)
@@ -84,7 +84,7 @@ class Text:
         self.heading_dict = headings_dict.copy()
         return headings_dict  
 
-    def remove_headings(self, text_list: list[str] = None, heading: str = None)-> list[str]:
+    def remove_headings(self, text_list = None, heading = None):
         if not text_list:
             text_list = self.check_initialized(text_list)
 
@@ -97,7 +97,7 @@ class Text:
 
         return heading_removed_list
     
-    def remove_full_stop(self, text_list: list[str] = None, count: int = 2)-> list[str]:
+    def remove_full_stop(self, text_list = None, count = 2):
         
         if not text_list:
             text_list = self.check_initialized(text_list)
@@ -110,7 +110,7 @@ class Text:
         self.text_list = filter_list.copy()
         return filter_list
 
-    def get_sentence(self, text_list: list[str] = None)-> list[str]:
+    def get_sentence(self, text_list = None):
         
         if not text_list:
             text_list = self.check_initialized(text_list)
@@ -140,16 +140,16 @@ class Text:
 
  
     # Getter methods for testing and debugging
-    def get_list(self)-> list[str]:
+    def get_list(self):
         return self.text_list
     
-    def get_heading_dict(self)-> dict:
+    def get_heading_dict(self):
         return self.heading_dict
 
-    def get_digits_list(self)-> list:
+    def get_digits_list(self):
         return self.digits_list
     
-    def get_symbol_lists(self)-> list:
+    def get_symbol_lists(self):
         return self.symbols_list
 
 

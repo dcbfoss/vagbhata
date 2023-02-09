@@ -4,7 +4,7 @@ import csv
 
 class File_Processor:
 
-    def __init__(self, file_path : str) -> None:
+    def __init__(self, file_path):
 
         self.file_path = file_path
         print(self.file_path)
@@ -15,17 +15,17 @@ class File_Processor:
         
         
 
-    def print_path(self)-> str:
+    def print_path(self):
         return self.file_path
     
-    def path_error_handling(self)-> None:
+    def path_error_handling(self):
         try:
             self.file = open(self.file_path , encoding= "utf8" )
         except OSError as e:
             print(f"Path or File does not exist. Error Code: {e.errno}")
 
             
-    def read(self)-> list[str]:
+    def read(self):
         
         self.path_error_handling()
 
@@ -42,11 +42,10 @@ class File_Processor:
         return lines
 
 
-    def r_split(self, lines: list ,line_count: int, cut: bool = False)-> list:
+    def r_split(self, lines ,line_count, cut = False):
         
         lines_len = len(lines)
         self.divisions = ceil(lines_len / line_count) if not cut else (lines_len // line_count)
-        print(f"Divisions : {self.divisions}")
 
         split_matrix = []
         slice_list = lines.copy()
@@ -57,7 +56,7 @@ class File_Processor:
         
         return split_matrix
 
-    def o_split(self, lines: list, line_count: int, cut: bool = False)-> list:
+    def o_split(self, lines, line_count, cut = False):
         
         lines_len = len(lines)
 
@@ -72,7 +71,7 @@ class File_Processor:
         return split_matrix
 
 
-    def split(self, lines: list = None ,line_count: int = 1, overlap: bool = False, cut: bool = False)-> list:
+    def split(self, lines = None ,line_count = 1, overlap = False, cut = False):
         
         if not lines and not self.lines:
             self.lines = self.read()
@@ -86,14 +85,14 @@ class File_Processor:
         
         return self.split_matrix
 
-    def get_lines(self) -> list[str]:
+    def get_lines(self):
         return self.lines
 
-    def get_split_matrix(self) -> list:
+    def get_split_matrix(self):
         return self.split_matrix
         
 
-    def write(self, file_path: str, data: list[list] = None, fields: list[str]= None)-> None:
+    def write(self, file_path, data = None, fields = None):
 
         if '/' in file_path:
             file = file_path.split('/')
