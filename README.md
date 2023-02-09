@@ -1,5 +1,7 @@
 # Vagbhata Project
 
-##Dependency
+## Dependencies
+```
 pip install numpy
 pip install opencv-python
+```
