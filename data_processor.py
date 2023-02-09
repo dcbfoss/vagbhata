@@ -4,14 +4,14 @@ class Text:
 
     def __init__(self, language, text_list = None):
         
-        languages = ['sanskrit','Sanskrit', 'transliterated', 'Transliterated']
+        languages = ['sanskrit','Sanskrit','sn', 's', 'transliterated', 'Transliterated', 'tl', 't']
         if language not in languages:
             raise ValueError(f"Invalid language, must be either {', '.join(languages)}")
         
         self.symbols_list = ['?', '(', ')', ',', '.', '/' , '\\', '-', '_', '!', '[', ']', '`','~', '{', '}', ':', ';', '+']
         self.digits_list = list(map(str, range(0,10)))
 
-        if language in languages[0:2]:
+        if language in languages[0:4]:
 
             sans_digits = [chr(x) for x in range(2406,2416)]
             self.digits_list.extend(sans_digits)
@@ -51,7 +51,7 @@ class Text:
 
         filter_list = text_list.copy()
         for line in range(len(filter_list)):
-            filter_list[line] = ''.join([x for x in filter_list[line] if x not in (self.symbol_remover)]).strip()
+            filter_list[line] = ''.join([x for x in filter_list[line] if x not in (self.symbols_list)]).strip()
         
         self.text_list = filter_list.copy()
 
@@ -105,28 +105,30 @@ class Text:
         filter_list = text_list.copy()
 
         for x in range(len(text_list)):
-            filter_list[x] = filter_list[x].replace('|', '', count).strip()
+            filter_list[x] = filter_list[x].replace('॥', '', count).strip()
+            filter_list[x] = filter_list[x].replace('।', '', count).strip()
         
+        filter_list = [x for x in filter_list if x]
+
         self.text_list = filter_list.copy()
         return filter_list
 
-    def get_sentence(self, text_list = None):
+    def get_sentence(self, text_list = None)-> list[str]:
         
         if not text_list:
             text_list = self.check_initialized(text_list)
-        
+            
+         
         temp_str = ' '.join(text_list)
         sentence_list = []
         iter = 0
         while temp_str:
             
-            offset = 1
-
-            if temp_str[iter] == '|':
-                if temp_str[iter+1] == '|':
-                    offset = 2
-                sentence_list.append(temp_str[:iter+offset])
-                temp_str = temp_str[iter+offset:].strip()
+            if temp_str[iter] == '॥' or temp_str[iter] == '।':
+                
+                sentence_list.append(temp_str[:iter+1])
+                
+                temp_str = temp_str[iter+1:].strip()
                 iter = 0
             else:
                 iter += 1
@@ -151,6 +153,5 @@ class Text:
     
     def get_symbol_lists(self):
         return self.symbols_list
-
 
 
