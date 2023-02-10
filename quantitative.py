@@ -1,4 +1,3 @@
-
 import data_processor as dp
 import file_processor as fp
 import gl
@@ -28,7 +27,6 @@ no_headings = text_obj.remove_headings(no_symbols)
 sentence_only = text_obj.get_sentence(no_headings)
 full_stop_remove = text_obj.remove_full_stop(sentence_only)
 blocks = inputfile.split(full_stop_remove, BLOCKSIZE, True, True)
-
 
 # Analysis ------------------------
 
