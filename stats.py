@@ -77,5 +77,33 @@ class text_object:
         for i in len_array:
             this_dict[i] = this_dict.get(i,0) + 1
         return this_dict
-        
+
+def crop_by_three(text):
+    output = []
+    while len(text)>0:
+        output.append(text[0:3])
+        text = text[3:]
+    return output
+
+def chi_square(block1, block2):
+    b1_lg = [crop_by_three(''.join(gl.get_lg(gl.get_syllables(i))).replace('-','')) for i in block1]
+    b2_lg = [crop_by_three(''.join(gl.get_lg(gl.get_syllables(i))).replace('-','')) for i in block2]
+    merged = []; b1_lg_arr = []; b2_lg_arr = [];sum_arr = []
+    for i in b1_lg:
+        for j in i:
+            if not(j in merged):merged.append(j)
+    for i in b2_lg:
+        for j in i:
+            if not(j in merged):merged.append(j)
+    b1_lg_arr = [0 for i in merged]
+    b2_lg_arr = [0 for i in merged]
+    for i in b1_lg:
+        for j in i:
+            b1_lg_arr[merged.index(j)] += 1
+    for i in b2_lg:
+        for j in i:
+            b2_lg_arr[merged.index(j)] += 1
+    b1_sum = sum(b1_lg_arr); b2_sum = sum(b2_lg_arr)
+    for i in range(len(b1_lg_arr)):
+        sum_arr.append(b1_lg_arr[i]+b2_lg_arr[i])
     
