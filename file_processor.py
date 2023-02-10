@@ -49,7 +49,6 @@ class File_Processor:
     def __init__(self, file_path):
 
         self.file_path = file_path
-        print(self.file_path)
         self.file = None
         self.divisons = 0
         self.lines = None

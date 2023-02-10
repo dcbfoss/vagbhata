@@ -111,7 +111,7 @@ class Text:
         self.text_list = filter_list.copy()
         return filter_list
 
-    def get_sentence(self, text_list = None)-> list[str]:
+    def get_sentence(self, text_list = None):
         
         if not text_list:
             text_list = self.check_initialized(text_list)

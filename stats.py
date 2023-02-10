@@ -20,7 +20,7 @@ class text_object:
     def average_sentence_word_len(self):# Average Sentence Length (counted in words)
         sentence_count = len(self.texts)
         sentence_len_array = [];output=0
-        for line in texts:
+        for line in self.texts:
             sentence_len_array.append(len(line.split()))
         output = sum(sentence_len_array)/sentence_count
         return output
@@ -28,7 +28,7 @@ class text_object:
     def average_sentence_chr_len(self):# Average Sentence Length (counted in characters)
         sentence_count = len(self.texts)
         sentence_len_array = [];output=0
-        for line in texts:
+        for line in self.texts:
             sentence_len_array.append(len(line))
         output = sum(sentence_len_array)/sentence_count
         return output
@@ -67,7 +67,7 @@ class text_object:
 
     def average_compound_words(self):
         output = 0;len_array=self.get_word_len()
-        compound_words = [i for i in len_array if (len(i)>=30)]
+        compound_words = [i for i in len_array if (i >= 30)]
         if (len(len_array)>0):output = len(compound_words)/len(len_array)
         return output
 

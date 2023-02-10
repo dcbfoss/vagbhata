@@ -45,7 +45,7 @@ def get_lg(syllables: list):
     return output
 
 def slice_list(syllables: list, cropsize: int=40):
-    if len(syllables)<=cropsize:return syllables
+    if len(syllables)<=cropsize:return [syllables]
     output = []
     while len(syllables)>0:
         output.append(syllables[0:25])
