@@ -88,7 +88,7 @@ class Text:
 
         if not heading:
             heading = ''.join([x for x in text_list[0] if not x.isdigit()]).strip()
-        
+
         heading_removed_list = [x for x in text_list if not x.startswith(heading)]
         
         self.text_list = heading_removed_list
@@ -108,6 +108,21 @@ class Text:
         
         filter_list = [x for x in filter_list if x]
 
+        self.text_list = filter_list.copy()
+        return filter_list
+    
+    def remove_full_stop_CS(self, text_list = None, count = 4):
+        
+        if not text_list:
+            text_list = self.check_initialized(text_list)
+
+        filter_list = text_list.copy()
+
+        for x in range(len(text_list)):
+            filter_list[x] = filter_list[x].replace('|', '', count).strip()
+        
+        filter_list = [x for x in filter_list if x]
+            
         self.text_list = filter_list.copy()
         return filter_list
 
@@ -137,8 +152,38 @@ class Text:
         
         self.text_list = sentence_list.copy()
         return sentence_list 
+    
 
- 
+    def get_sentence_CS(self, text_list = None):
+        
+        if not text_list:
+            text_list = self.check_initialized(text_list)
+            
+         
+        temp_str = ' '.join(text_list)
+        sentence_list = []
+        iter = 0
+        while temp_str:
+            
+            offset = 1
+
+            if temp_str[iter] == '|':
+                
+                if temp_str[iter+1] == '|':
+                    offset += 1
+                sentence_list.append(temp_str[:iter+offset])
+                temp_str = temp_str[iter+offset:].strip()
+                iter = 0
+            else:
+                iter += 1
+            
+            if (len(temp_str)-1) < iter or (len(temp_str)-1) < (iter + 1):
+                sentence_list.append(temp_str)
+                break   
+        
+        self.text_list = sentence_list.copy()
+        return sentence_list 
+
     # Getter methods for testing and debugging
     def get_list(self):
         return self.text_list

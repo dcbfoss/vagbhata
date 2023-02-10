@@ -3,3 +3,5 @@ tests/
 _pycache_/
 __pycache__/
 /test.py
+
+divisions/
