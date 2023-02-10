@@ -1,5 +1,5 @@
 import math
-
+import gl
 class text_object:
     def __init__(self, texts=[]):
         self.texts = texts
@@ -29,7 +29,8 @@ class text_object:
         sentence_count = len(self.texts)
         sentence_len_array = [];output=0
         for line in self.texts:
-            sentence_len_array.append(len(line))
+            syl = gl.get_syllables(line.rstrip())
+            sentence_len_array.append(len(syl))
         output = sum(sentence_len_array)/sentence_count
         return output
 

@@ -11,6 +11,7 @@ import stats as st
 MODE = 'SN'     # SN/TL
 BOOK = 'AS'     # AH/AS/CS
 CHAPTER = 1     # 1/2/3/4/5/6
+BLOCKSIZE = 40
 
 
 # settings ------------------------
@@ -25,7 +26,8 @@ no_digits = text_obj.remove_digit()
 no_symbols = text_obj.remove_symbol(no_digits)
 no_headings = text_obj.remove_headings(no_symbols)
 sentence_only = text_obj.get_sentence(no_headings)
-blocks = inputfile.split(sentence_only, 40, False, True)
+full_stop_remove = text_obj.remove_full_stop(sentence_only)
+blocks = inputfile.split(full_stop_remove, BLOCKSIZE, True, True)
 
 
 # Analysis ------------------------
