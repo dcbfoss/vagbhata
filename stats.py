@@ -88,22 +88,22 @@ def crop_by_three(text):
 def chi_square(block1, block2):
     b1_lg = [crop_by_three(''.join(gl.get_lg(gl.get_syllables(i))).replace('-','')) for i in block1]
     b2_lg = [crop_by_three(''.join(gl.get_lg(gl.get_syllables(i))).replace('-','')) for i in block2]
-    merged = []; b1_lg_arr = []; b2_lg_arr = [];sum_arr = []
-    for i in b1_lg:
-        for j in i:
-            if not(j in merged):merged.append(j)
-    for i in b2_lg:
-        for j in i:
-            if not(j in merged):merged.append(j)
+    merged = []; b1_lg_arr = []; b2_lg_arr = [];output = 0
+    for i, j in zip(b1_lg, b2_lg):
+        for k, l in zip(i, j):
+            if not(k in merged):merged.append(k)
+            if not(l in merged):merged.append(l)
     b1_lg_arr = [0 for i in merged]
     b2_lg_arr = [0 for i in merged]
-    for i in b1_lg:
-        for j in i:
-            b1_lg_arr[merged.index(j)] += 1
-    for i in b2_lg:
-        for j in i:
-            b2_lg_arr[merged.index(j)] += 1
-    b1_sum = sum(b1_lg_arr); b2_sum = sum(b2_lg_arr)
+    for i, j in zip(b1_lg, b2_lg):
+        for k, l in zip(i, j):
+            b1_lg_arr[merged.index(k)] += 1
+            b2_lg_arr[merged.index(l)] += 1
+    b1_sum = sum(b1_lg_arr); b2_sum = sum(b2_lg_arr); count_b1_b2 = b1_sum + b2_sum
     for i in range(len(b1_lg_arr)):
-        sum_arr.append(b1_lg_arr[i]+b2_lg_arr[i])
+        this_sum = b1_lg_arr[i]+b2_lg_arr[i]
+        this_b1_val = ((this_sum * b1_sum) / count_b1_b2)
+        this_b2_val = ((this_sum * b1_sum) / count_b1_b2)
+        output = output + (((b1_lg_arr[i]-this_b1_val)**2)/this_b1_val) + (((b1_lg_arr[i]-this_b2_val)**2)/this_b2_val)
+    return output
     

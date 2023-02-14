@@ -24,9 +24,18 @@ text_obj = dp.Text(TEXTS[MODE],content)
 no_digits = text_obj.remove_digit()
 no_symbols = text_obj.remove_symbol(no_digits)
 no_headings = text_obj.remove_headings(no_symbols)
-sentence_only = text_obj.get_sentence(no_headings)
-full_stop_remove = text_obj.remove_full_stop(sentence_only)
+
+if BOOK == 'CS':
+    sentence_only = text_obj.get_sentence_CS(no_headings)
+    full_stop_remove = text_obj.remove_full_stop_CS(sentence_only)
+else:
+    sentence_only = text_obj.get_sentence(no_headings)
+    full_stop_remove = text_obj.remove_full_stop(sentence_only)
+    
 blocks = inputfile.split(full_stop_remove, BLOCKSIZE, True, True)
+
+for i in range(len(blocks)):
+    print(blocks[i])
 
 # Analysis ------------------------
 
