@@ -9,7 +9,7 @@ MODE = 'SN'     # SN/TL
 BOOK = 'AS'     # AH/AS/CS
 CHAPTER = 1     # 1/2/3/4/5/6
 BLOCKSIZE = 25  # 25/50/75
-ANALYSIS = 'I'  # Q/R/C/I
+ANALYSIS = 'Q'  # Q/R/C/I
                 # Quantitative // GL-Richness // Chi-Square // Image
 SCALE = 400     # for image only (400/250/512/..)
 
