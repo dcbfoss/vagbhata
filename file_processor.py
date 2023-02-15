@@ -1,4 +1,6 @@
 from math import ceil
+import data_processor as dp
+import graphics as gr
 import os
 import csv
 
@@ -24,6 +26,11 @@ DIRS = {'AS_TL':TL_AS,
 def get_chapter_name(number, book):
     if book == 'CS':return CS_DOC_NAMES[number-1]
     else:return AH_AS_DOC_NAMES[number-1]
+
+def get_analysis_name(val):
+    val = val.upper()
+    info = {'Q':'Quantitative','R':'GL-Richness','C':'Chi-Square','I':'Image'}
+    return info.get(val,'Unknown')
 
 def get_filename(mode='SN', book='AS', chapter=1):
     # mode = TL/SN
@@ -146,3 +153,29 @@ class File_Processor:
             writer = csv.writer(file)
             writer.writerow(fields)
             writer.writerows(data)
+
+def get_blocks(MODE,BOOK,CHAPTER,BLOCKSIZE):
+    TEXTS = {'SN':'sanskrit','TL':'transliterated'}
+    filename = get_filename(MODE,BOOK,CHAPTER)
+    inputfile = File_Processor(filename)
+    content = inputfile.read()
+    text_obj = dp.Text(TEXTS[MODE],content)
+    no_digits = text_obj.remove_digit()
+    no_symbols = text_obj.remove_symbol(no_digits)
+    no_headings = text_obj.remove_headings(no_symbols)
+    if BOOK == 'CS':
+        sentence_only = text_obj.get_sentence_CS(no_headings)
+        full_stop_remove = text_obj.remove_full_stop_CS(sentence_only)
+    else:
+        sentence_only = text_obj.get_sentence(no_headings)
+        full_stop_remove = text_obj.remove_full_stop(sentence_only)
+    blocks = inputfile.split(full_stop_remove, BLOCKSIZE, True, True)
+    return blocks
+
+def write_data(MODE,BOOK,CHAPTER,ANALYSIS,BLOCKSIZE,this_data,header):
+    if ANALYSIS=='I':
+        for i, j in zip(header, this_data):
+            gr.draw_png(i, j)
+    else:
+        OUTPUT_FILENAME = get_analysis_name(ANALYSIS)+'_'+str(BLOCKSIZE)+'_'+'_'.join([MODE,BOOK,get_chapter_name(CHAPTER,BOOK)])+'.csv'
+        File_Processor.write(None,OUTPUT_FILENAME, this_data, header)

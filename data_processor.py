@@ -1,3 +1,8 @@
+import stats as st
+import file_processor as fp
+import graphics as gr
+import gl
+
 class Text:
 
     def __init__(self, language, text_list = None):
@@ -197,4 +202,49 @@ class Text:
     def get_symbol_lists(self):
         return self.symbols_list
 
+class Analysis:
+    def __init__(self, data):
+        self.data = data
+        
+    def get_quantitative(self,MODE,BOOK,CHAPTER):
+        this_data = []
+        header = ['Mode','Book','Chapter','Block','Avg Word Len', 'Avg Sen Len (Word)', 'Avg Sen Len (Chr)', 'Richness', 'Shannon', 'Avg Compound Words']
+        for INDEX, block in enumerate(self.data):
+            txt_obj = st.text_object(block)
+            avg_word_len = txt_obj.average_word_len()
+            avg_sen_len_w = txt_obj.average_sentence_word_len()
+            avg_sen_len_c = txt_obj.average_sentence_chr_len()
+            rich_ratio = txt_obj.get_richness_ratio()
+            shannon = txt_obj.get_shannon()
+            avg_compound_words = txt_obj.average_compound_words()
+            this_data.append([MODE,BOOK,fp.get_chapter_name(CHAPTER,BOOK).split('_')[0],INDEX+1,avg_word_len,avg_sen_len_w,avg_sen_len_c,rich_ratio,shannon,avg_compound_words])
+        return (header, this_data)
+
+    def get_gl_richness(self,MODE,BOOK,CHAPTER):
+        this_data = []
+        header = ['Mode','Book','Chapter','Block']
+        block_patterns = []
+        for i in range(len(self.data)):
+            val = st.gl_patterns(self.data[i])
+            block_patterns.append(val)
+        this_header = st.gl_pattern_header(block_patterns)
+        this_richness = st.gl_richness(this_header, block_patterns)
+        for i in this_header:
+            header.append(i)
+        for i, j in enumerate(this_richness):
+            this_row = [MODE,BOOK,fp.get_chapter_name(CHAPTER,BOOK).split('_')[0],str(i+1)]
+            for k in j:
+                this_row.append(str(k))
+            this_data.append(this_row)
+        return (header, this_data)
+
+    def get_graphics_data(self, MODE, BOOK, CHAPTER, SCALE = 400):
+        HEADER = []; DATA = []
+        for INDEX, block in enumerate(self.data):
+            this_matrix = gl.create_matrix(block, int(SCALE/10))
+            this_img_data = gr.prepare_image(this_matrix,SCALE)
+            FILENAME = '_'.join([MODE,BOOK,fp.get_chapter_name(CHAPTER,BOOK).split('_')[0],str(INDEX+1)])
+            HEADER.append(FILENAME)
+            DATA.append(this_img_data)
+        return (HEADER, DATA)           
 

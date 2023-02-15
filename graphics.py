@@ -19,6 +19,6 @@ def prepare_image(data: list, scale: int= 400):
     return output
 
 
-def draw_png(filename: str, data: list, width: int=250, height: int=250):
-    cv2.imwrite(filename, data)
+def draw_png(filename: str, data: list):
+    cv2.imwrite(filename+'.png', data)
 

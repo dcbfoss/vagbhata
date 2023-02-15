@@ -1,4 +1,4 @@
-import math
+import math, itertools
 import gl
 class text_object:
     def __init__(self, texts=[]):
@@ -85,9 +85,34 @@ def crop_by_three(text):
         text = text[3:]
     return output
 
+def gl_patterns(block):
+    output = list(itertools.chain.from_iterable([crop_by_three(''.join(gl.get_lg(gl.get_syllables(i))).replace('-','')) for i in block]))
+    return output
+
+def gl_pattern_header(matrix):
+    header = []
+    for i in matrix:
+        this_head = list(set(i))
+        for j in this_head:
+            if not(j in header):header.append(j)
+    return header
+
+def gl_richness(header, data):
+    output = []
+    for d in data:
+        this_d = [0 for i in header]
+        for e in d:
+            this_d[header.index(e)] += 1
+        output.append(this_d)
+    return output
+
 def chi_square(block1, block2):
-    b1_lg = [crop_by_three(''.join(gl.get_lg(gl.get_syllables(i))).replace('-','')) for i in block1]
-    b2_lg = [crop_by_three(''.join(gl.get_lg(gl.get_syllables(i))).replace('-','')) for i in block2]
+    b1_lg = list(itertools.chain.from_iterable([crop_by_three(''.join(gl.get_lg(gl.get_syllables(i))).replace('-','')) for i in block1]))
+    b2_lg = list(itertools.chain.from_iterable([crop_by_three(''.join(gl.get_lg(gl.get_syllables(i))).replace('-','')) for i in block2]))
+    lg_full = list(set(b1_lg));lg_full.extend(list(set(b2_lg)))
+    merged = list(set(lg_full))
+    
+    """         
     merged = []; b1_lg_arr = []; b2_lg_arr = [];output = 0
     for i, j in zip(b1_lg, b2_lg):
         for k, l in zip(i, j):
@@ -106,4 +131,5 @@ def chi_square(block1, block2):
         this_b2_val = ((this_sum * b1_sum) / count_b1_b2)
         output = output + (((b1_lg_arr[i]-this_b1_val)**2)/this_b1_val) + (((b1_lg_arr[i]-this_b2_val)**2)/this_b2_val)
     return output
+    """
     

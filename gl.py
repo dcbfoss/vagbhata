@@ -56,7 +56,7 @@ def create_matrix(sanskrit_lines: list,frame_width: int=40):
     val_arr = {chr(45):-1,chr(76):0,chr(71):1}
     output = [[-1 for j in range(frame_width)] for i in range(len(sanskrit_lines))]
     for index, line in enumerate(sanskrit_lines):
-        gl = get_lg(get_syllables(line))
+        gl = slice_list(get_lg(get_syllables(line)),frame_width)[0]
         for ind, entry in enumerate(gl):
             output[index][ind] = val_arr[gl[ind]]
     return output
