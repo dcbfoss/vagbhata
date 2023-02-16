@@ -2,6 +2,7 @@ import stats as st
 import file_processor as fp
 import graphics as gr
 import gl
+from tqdm import tqdm
 
 class Text:
 
@@ -208,7 +209,7 @@ class Analysis:
         
     def get_quantitative(self,MODE,BOOK,CHAPTER):
         this_data = []
-        header = ['Mode','Book','Chapter','Block','Avg Word Len', 'Avg Sen Len (Word)', 'Avg Sen Len (Chr)', 'Richness', 'Shannon', 'Avg Compound Words']
+        header = ['Text_Type','Book','Chapter','Window','Avg Word Len', 'Avg Sen Len (Word)', 'Avg Sen Len (Chr)', 'Richness', 'Shannon', 'Avg Compound Words']
         for INDEX, block in enumerate(self.data):
             txt_obj = st.text_object(block)
             avg_word_len = txt_obj.average_word_len()
@@ -217,18 +218,18 @@ class Analysis:
             rich_ratio = txt_obj.get_richness_ratio()
             shannon = txt_obj.get_shannon()
             avg_compound_words = txt_obj.average_compound_words()
-            this_data.append([MODE,BOOK,fp.get_chapter_name(CHAPTER,BOOK).split('_')[0],INDEX+1,avg_word_len,avg_sen_len_w,avg_sen_len_c,rich_ratio,shannon,avg_compound_words])
+            this_data.append([MODE,BOOK,fp.get_chapter_name(CHAPTER,BOOK).split('_')[0],INDEX+1,round(avg_word_len,2),round(avg_sen_len_w,2),round(avg_sen_len_c,2),round(rich_ratio,2),round(shannon,2),round(avg_compound_words,2)])
         return (header, this_data)
 
     def get_gl_richness(self,MODE,BOOK,CHAPTER):
         this_data = []
-        header = ['Mode','Book','Chapter','Block']
+        header = ['Text_Type','Book','Chapter','Window']
         block_patterns = []
         for i in range(len(self.data)):
-            val = st.gl_patterns(self.data[i])
+            val = gl.gl_patterns(self.data[i])
             block_patterns.append(val)
-        this_header = st.gl_pattern_header(block_patterns)
-        this_richness = st.gl_richness(this_header, block_patterns)
+        this_header = gl.gl_pattern_header(block_patterns)
+        this_richness = gl.gl_richness(this_header, block_patterns)
         for i in this_header:
             header.append(i)
         for i, j in enumerate(this_richness):
@@ -246,5 +247,32 @@ class Analysis:
             FILENAME = '_'.join([MODE,BOOK,fp.get_chapter_name(CHAPTER,BOOK).split('_')[0],str(INDEX+1)])
             HEADER.append(FILENAME)
             DATA.append(this_img_data)
-        return (HEADER, DATA)           
+        return (HEADER, DATA)
+
+def chi_square(block1, block2):
+    w1 = []; w2 = []; sum_list = []; output = 0
+    for i in range(len(block1)):
+        if block1[i] == 0 and block2[i] == 0:pass
+        else:w1.append(block1[i]); w2.append(block2[i]);sum_list.append(w1[-1]+w2[-1])
+    b1_sum = 0; b2_sum = 0;total = 1;b1_arr = []; b2_arr = []
+    b1_sum = sum(w1); b2_sum = sum(w2); total = sum(sum_list)
+    for i in range(len(sum_list)):
+        output += (((w1[i] - ((sum_list[i]*b1_sum)/total))**2)/((sum_list[i]*b1_sum)/total))
+        output += (((w2[i] - ((sum_list[i]*b2_sum)/total))**2)/((sum_list[i]*b2_sum)/total))
+    return output
+    
+
+def get_chi_square(MODE,BOOK,CHAPTER,FILENAME):
+    this_data = []; header = ['Text_Type','Book','Chapter','Window']
+    temp_data = []
+    with open(FILENAME, 'r') as inpfile:
+        for i, line in enumerate(inpfile):
+            if i>0:temp_data.append([float(i) for i in line.rstrip().split(',')[4:]])
+    for INDEX, i in tqdm(enumerate(temp_data)):
+        header.append(str(INDEX+1))
+        this_row = [MODE,BOOK,fp.get_chapter_name(CHAPTER,BOOK).split('_')[0],str(INDEX+1)]
+        for j in temp_data:
+            this_row.append(round(chi_square(i, j),2))
+        this_data.append(this_row)
+    return (header, this_data)
 

@@ -1,5 +1,5 @@
 import numpy as np
-import cv2
+import cv2, os
 
 def get_pixel(value: int):
     if value==1:return [255,0,0]
@@ -20,5 +20,6 @@ def prepare_image(data: list, scale: int= 400):
 
 
 def draw_png(filename: str, data: list):
-    cv2.imwrite(filename+'.png', data)
+    if not os.path.exists('images'):os.makedirs('images')
+    cv2.imwrite('images/'+filename+'.png', data)
 

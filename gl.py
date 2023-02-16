@@ -1,4 +1,4 @@
-
+import itertools
 connector = 2381
 signs = [i for i in range(2366,2373)];signs.extend([2375,2376,2379,2380,2402,2403])
 numbers = [j for j in range(2406,2416)]
@@ -74,3 +74,31 @@ def get_gl_ratio(sankskrit_lines: list):
     g_ratio = count[chr(71)]/(count[chr(71)]+count[chr(76)])
     l_ratio = count[chr(76)]/(count[chr(71)]+count[chr(76)])
     return (g_ratio, l_ratio)
+
+def crop_by_three(text):
+    output = []
+    while len(text)>0:
+        output.append(text[0:3])
+        text = text[3:]
+    return output
+
+def gl_patterns(block):
+    output = list(itertools.chain.from_iterable([crop_by_three(''.join(get_lg(get_syllables(i))).replace('-','')) for i in block]))
+    return output
+
+def gl_pattern_header(matrix):
+    header = []
+    for i in matrix:
+        this_head = list(set(i))
+        for j in this_head:
+            if not(j in header):header.append(j)
+    return header
+
+def gl_richness(header, data):
+    output = []
+    for d in data:
+        this_d = [0 for i in header]
+        for e in d:
+            this_d[header.index(e)] += 1
+        output.append(this_d)
+    return output
