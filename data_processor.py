@@ -239,12 +239,12 @@ class Analysis:
             this_data.append(this_row)
         return (header, this_data)
 
-    def get_graphics_data(self, MODE, BOOK, CHAPTER, SCALE = 400):
+    def get_graphics_data(self, MODE, BOOK, CHAPTER, BLOCKSIZE, SCALE = 400):
         HEADER = []; DATA = []
         for INDEX, block in enumerate(self.data):
             this_matrix = gl.create_matrix(block, int(SCALE/10))
             this_img_data = gr.prepare_image(this_matrix,SCALE)
-            FILENAME = '_'.join([MODE,BOOK,fp.get_chapter_name(CHAPTER,BOOK).split('_')[0],str(INDEX+1)])
+            FILENAME = '_'.join([MODE,BOOK,str(BLOCKSIZE),str(CHAPTER),fp.get_chapter_name(CHAPTER,BOOK).split('_')[0],str(INDEX+1)])
             HEADER.append(FILENAME)
             DATA.append(this_img_data)
         return (HEADER, DATA)

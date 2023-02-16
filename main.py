@@ -25,7 +25,7 @@ data_obj = dp.Analysis(blocks)
 if ANALYSIS.upper() == 'Q':
     header, this_data = data_obj.get_quantitative(MODE,BOOK,CHAPTER)
 elif ANALYSIS.upper() == 'I':
-    header, this_data = data_obj.get_graphics_data(MODE,BOOK,CHAPTER, SCALE)
+    header, this_data = data_obj.get_graphics_data(MODE,BOOK,CHAPTER,BLOCKSIZE, SCALE)
 elif ANALYSIS.upper() == 'C':
     FILENAME = fp.get_analysis_name('R')+'_'+str(BLOCKSIZE)+'_'+'_'.join([MODE,BOOK,fp.get_chapter_name(CHAPTER,BOOK)])+'.csv'
     if not(os.path.exists(FILENAME)):
