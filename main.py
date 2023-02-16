@@ -7,7 +7,7 @@ import os
 # Variables ------------------------
 
 MODE = 'SN'     # SN/TL
-BOOK = 'AS'     # AH/AS/CS
+BOOK = 'AH'     # AH/AS/CS
 CHAPTER = 1     # 1/2/3/4/5/6
 BLOCKSIZE = 25  # 25/50/75
 ANALYSIS = 'Q'  # Q/R/C/I
