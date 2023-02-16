@@ -12,11 +12,11 @@ CHAPTER = 1     # 1/2/3/4/5/6
 BLOCKSIZE = 25  # 25/50/75
 ANALYSIS = 'Q'  # Q/R/C/I
                 # Quantitative // GL-Richness // Chi-Square // Image
-SCALE = 400     # for image only (400/250/512/..)
 
 
 # settings ------------------------
 
+SCALE = BLOCKSIZE * 10    # for image only (400/250/512/..)
 blocks = fp.get_blocks(MODE,BOOK,CHAPTER,BLOCKSIZE)
 
 # Analysis ------------------------
