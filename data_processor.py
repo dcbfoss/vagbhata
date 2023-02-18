@@ -3,6 +3,7 @@ import file_processor as fp
 import graphics as gr
 import gl
 from tqdm import tqdm
+import statistics
 
 class Text:
 
@@ -263,16 +264,19 @@ def chi_square(block1, block2):
     
 
 def get_chi_square(MODE,BOOK,CHAPTER,FILENAME):
-    this_data = []; header = ['Text_Type','Book','Chapter','Window']
+    this_data = []; header = ['Text_Type','Book','Chapter','Window','Mean','StDev']
     temp_data = []
     with open(FILENAME, 'r') as inpfile:
         for i, line in enumerate(inpfile):
             if i>0:temp_data.append([float(i) for i in line.rstrip().split(',')[4:]])
-    for INDEX, i in tqdm(enumerate(temp_data)):
-        header.append(str(INDEX+1))
+    for INDEX, i in tqdm(enumerate(temp_data),total = len(temp_data)):
         this_row = [MODE,BOOK,fp.get_chapter_name(CHAPTER,BOOK).split('_')[0],str(INDEX+1)]
+        this_chi_vals = []
         for j in temp_data:
-            this_row.append(round(chi_square(i, j),2))
+            this_chi_vals.append(round(chi_square(i, j),2))
+        mean = statistics.mean(this_chi_vals)
+        std  = statistics.stdev(this_chi_vals)
+        this_row.append(round(mean,2));this_row.append(round(std,2))
         this_data.append(this_row)
     return (header, this_data)
 

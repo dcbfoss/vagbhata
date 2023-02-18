@@ -7,10 +7,10 @@ import os
 # Variables ------------------------
 
 MODE = 'SN'     # SN/TL
-BOOK = 'AH'     # AH/AS/CS
-CHAPTER = 1     # 1/2/3/4/5/6
+BOOK = 'AS'     # AH/AS/CS
+CHAPTER = 6     # 1/2/3/4/5/6
 BLOCKSIZE = 25  # 25/50/75
-ANALYSIS = 'Q'  # Q/R/C/I
+ANALYSIS = 'C'  # Q/R/C/I
                 # Quantitative // GL-Richness // Chi-Square // Image
 
 
