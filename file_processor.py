@@ -154,6 +154,43 @@ class File_Processor:
             writer.writerow(fields)
             writer.writerows(data)
 
+# To Create directories and to get a list of required file names and paths
+class Manage_Files:
+
+    def __init__(self, divisions:int = None, book:str = 'AS', data_type:str = "Chi-Square" ):
+
+        if(divisions not in [25,50,75,None]):
+            raise ValueError
+        self.divisions = divisions
+        if not divisions:
+            self.dir_path = os.path.join('data','result', book, data_type)
+        else:
+            self.dir_path = os.path.join('data', 'result', book, data_type, str(self.divisions))
+   
+    # Gets the list of file names
+    def get_file_paths(self):
+
+        file_names = []
+        for path in os.listdir(self.dir_path):
+            file_path = os.path.join(self.dir_path,path)
+            if os.path.isfile(file_path):
+                file_names.append(file_path)
+
+        return file_names
+
+    def make_dir(self,dir_name, dir_parent = ""):
+
+        dir_path = os.path.join(str(dir_parent), str(dir_name))
+        exists = os.path.exists(dir_path)
+    
+        if not exists:
+            os.mkdir(dir_path)
+
+        return dir_path
+
+
+
+
 def get_blocks(MODE,BOOK,CHAPTER,BLOCKSIZE):
     TEXTS = {'SN':'sanskrit','TL':'transliterated'}
     filename = get_filename(MODE,BOOK,CHAPTER)
