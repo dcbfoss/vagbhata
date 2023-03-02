@@ -157,13 +157,16 @@ class File_Processor:
 # To Create directories and to get a list of required file names and paths
 class Manage_Files:
 
-    def __init__(self, divisions:int = None, book:str = 'AS', data_type:str = "Chi-Square" ):
+    def __init__(self, divisions:int = None, book:str = 'AS', data_type:str = "Chi-Square", abs_path = None):
 
         if(divisions not in [25,50,75,None]):
             raise ValueError
         self.divisions = divisions
-        if not divisions:
+
+        if not divisions and not abs_path:
             self.dir_path = os.path.join('data','result', book, data_type)
+        elif abs_path:
+            self.dir_path = abs_path
         else:
             self.dir_path = os.path.join('data', 'result', book, data_type, str(self.divisions))
    
